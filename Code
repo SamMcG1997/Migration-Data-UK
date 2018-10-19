@@ -1,0 +1,62 @@
+#Libraries needed to join together the excel spreadsheets.
+from xlrd import open_workbook
+import csv
+import re
+from os import listdir
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+#To get the folder with what files i will use we make basedir.
+basedir = 'Migrationdata/'
+#To get the file names we listdir
+files = listdir('Migrationdata')
+
+#To get multiple excel sheets.
+sheets = []
+for filename in files:
+    if filename.endswith("xls"):
+        sheets.append(filename)
+
+files = []
+for filename in sheets:
+    worksheet = open_workbook(basedir + filename).sheet_by_index(1)
+    files.append(worksheet.cell_value(3, 0))
+        
+with open('DATA.csv', 'w') as f:
+    w = csv.writer(f)
+    w.writerow(files)
+
+#c = sheets
+#dataframe = pd.read_excel("Migrationdata/%d" %c)
+d = pd.read_excel("Migrationdata/underlyingdatasheetsforpopulationbycountryofbirthandnationalityjan04todec04.xls", sheet_name = "Table A", header=5)
+
+d = pd.read_excel("Migrationdata/underlyingdatasheetsforpopulationbycountryofbirthandnationalityjan04todec04.xls", sheet_name = "Table A", header=5)
+countries = []
+for header in d:
+    if header[:7] != "Unnamed":
+        countries.append(header)
+print(countries)
+
+#This will get all of Albania's immigrants in different areas from Jan2004
+bigboy = pd.DataFrame(data = None)
+
+def make_excel_with_migration_data(countries):
+    #print(pd.loc[0:399, "Countries of the UK, unitary authorities, local authorities, metropolitan and London boroughs and counties"])
+    #Put a for loop going through all of the different sheets.
+    for countries in sheets:
+        pd.read_excel("Migrationdata/%s" %sheet, sheet_name = "Table A", header = 5)
+            bigboy = bigboy.insert(pd.read_excel(countries, "Migrationdata/%s" %sheet, sheet_name = "Table A", header = 5))
+    print(bigboy)
+
+sheets = []
+for filename in files:
+    if filename.endswith("xls"):
+        sheets.append(filename)
+        
+bigboy = pd.DataFrame(data = None, index = None)
+print(bigboy)
+for sheet in sheets:
+    bigboy = bigboy.insert(0, worksheet.cell_value(3, 0), pd.read_excel("Migrationdata/%s" %sheet, sheet_name = "Table A", header = 5))
+    
+
